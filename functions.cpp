@@ -1,5 +1,6 @@
 #include "header.h"
 #include <iostream>
+#include <chrono>
 using namespace std;
 
 ArrayValue::ArrayValue() : array(nullptr), size(0), min(2147483647), max(-2147483648), averageValue(0) {}
@@ -45,7 +46,7 @@ void findMinMax(ArrayValue* data)
         {
             data->minIndexes.push_back(i);
         }
-        Sleep(7);
+        this_thread::sleep_for(chrono::milliseconds(7));
 
         if (arr[i] > data->max)
         {
@@ -57,7 +58,7 @@ void findMinMax(ArrayValue* data)
         {
             data->maxIndexes.push_back(i);
         }
-        Sleep(7);
+        this_thread::sleep_for(chrono::milliseconds(7));
     }
 }
 
@@ -76,24 +77,20 @@ void calculateAverage(ArrayValue* data)
     for (int i = 0; i < arrSize; i++)
     {
         sum += arr[i];
-        Sleep(12);
+        this_thread::sleep_for(chrono::milliseconds(12));
     }
 
     data->averageValue = sum / arrSize;
 }
 
-DWORD WINAPI MinMaxThread(LPVOID lpParam)
+void MinMaxThread(ArrayValue* data)
 {
-    ArrayValue* data = static_cast<ArrayValue*>(lpParam);
     findMinMax(data);
     cout << "Found min (" << data->min << ") and max (" << data->max << ").\n";
-    return 0;
 }
 
-DWORD WINAPI AverageThread(LPVOID lpParam)
+void AverageThread(ArrayValue* data)
 {
-    ArrayValue* data = static_cast<ArrayValue*>(lpParam);
     calculateAverage(data);
     cout << "Found average: " << data->averageValue << endl;
-    return 0;
 }

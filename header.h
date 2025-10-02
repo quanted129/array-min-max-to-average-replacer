@@ -1,7 +1,7 @@
 #pragma once
 
-#include <windows.h>
 #include <vector>
+#include <thread>
 using namespace std;
 
 struct ArrayValue
@@ -21,8 +21,8 @@ struct ArrayValue
     void replaceMinMaxWithAverage();
 };
 
-DWORD WINAPI MinMaxThread(LPVOID lpParam);
-DWORD WINAPI AverageThread(LPVOID lpParam);
+void MinMaxThread(ArrayValue* data);
+void AverageThread(ArrayValue* data);
 
 void findMinMax(ArrayValue* data);
 void calculateAverage(ArrayValue* data);

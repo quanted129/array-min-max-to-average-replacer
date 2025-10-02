@@ -10,7 +10,8 @@ int main()
 
     if (size < 1)
     {
-        cout << "Size must be positive!" << endl;
+        cout << "Size must be positive"
+                "!" << endl;
         return 1;
     }
 
@@ -22,13 +23,11 @@ int main()
         cin >> arr.array[i];
     }
 
-    HANDLE hMinMaxThread = CreateThread(NULL, 0, MinMaxThread, &arr, 0, NULL);
-    HANDLE hAverageThread = CreateThread(NULL, 0, AverageThread, &arr, 0, NULL);
-    HANDLE threads[2] = { hMinMaxThread, hAverageThread };
+    thread minMaxThread(MinMaxThread, &arr);
+    thread averageThread(AverageThread, &arr);
 
-    WaitForMultipleObjects(2, threads, TRUE, INFINITE);
-    CloseHandle(hMinMaxThread);
-    CloseHandle(hAverageThread);
+    minMaxThread.join();
+    averageThread.join();
 
     arr.replaceMinMaxWithAverage();
 
